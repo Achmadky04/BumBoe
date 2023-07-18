@@ -1,4 +1,7 @@
+import 'package:bumboe/dummy_data.dart';
 import 'package:flutter/material.dart';
+
+import 'models/food.dart';
 
 class Recipe extends StatelessWidget {
   // final String idCategory;
@@ -11,6 +14,12 @@ class Recipe extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Map<String, dynamic> argsRecipe = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+
+    List<Food> filteredFood = dummy_food.where((food){
+      return food.category.contains(argsRecipe['id']);
+    }).toList();
+
+    
     return Scaffold(
       appBar: AppBar(
           centerTitle: true,
@@ -23,10 +32,12 @@ class Recipe extends StatelessWidget {
           elevation: 0,
         ),
         // ignore: prefer_const_constructors
-        body: Center(
-          // ignore: prefer_const_constructors
-          child: Text("Recipe"),
-        ),
+        body: ListView.builder(
+          itemCount: filteredFood.length,
+          itemBuilder: (context, index) {
+          final food = filteredFood[index].title;
+          return Text(food);
+        }),
     );
   }
 }
